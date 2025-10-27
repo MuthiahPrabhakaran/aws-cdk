@@ -13,7 +13,7 @@ export class CdkTestingStack extends cdk.Stack {
     });
 
     const bucket = new cdk.aws_s3.Bucket(this, 'CdkTestingBucket', {
-      versioned: true
+      versioned: false
     });
 
     bucket.grantRead(lambda);

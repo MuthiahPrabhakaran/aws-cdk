@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
-import { Template, Match } from 'aws-cdk-lib/assertions';
+import { Template, Match, Capture } from 'aws-cdk-lib/assertions';
 import * as CdkTesting from '../lib/cdk-testing-stack';
+import { PolicyDocument } from 'aws-cdk-lib/aws-iam';
 
 describe('CdkTestingStack test suite', () => {
 
@@ -47,5 +48,30 @@ describe('CdkTestingStack test suite', () => {
             })
         );
     });
+
+    test('Lambda actions with capture', () => {
+        const lambdaActionsCapture = new Capture();
+        template.hasResourceProperties('AWS::IAM::Policy', { // after this gets executed, the capture object contains the actual object
+            PolicyDocument: {
+                Statement: [{
+                    Action: lambdaActionsCapture
+                }]
+            }
+        });
+        const executedActions  = [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ]
+       expect(lambdaActionsCapture.asArray()).toEqual(
+        expect.arrayContaining(executedActions)
+       )
+    });
+
+    test('Bucket properties with snapshot', () => {
+        const bucketTemplate = template.findResources("AWS::S3::Bucket");
+        expect(bucketTemplate).toMatchSnapshot()
+    })
+
 
 });

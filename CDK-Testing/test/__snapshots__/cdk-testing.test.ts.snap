@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CdkTestingStack test suite Bucket properties with snapshot 1`] = `
+{
+  "CdkTestingBucket2C26D58A": {
+    "DeletionPolicy": "Retain",
+    "Type": "AWS::S3::Bucket",
+    "UpdateReplacePolicy": "Retain",
+  },
+}
+`;
